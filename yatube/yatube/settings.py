@@ -22,9 +22,9 @@ SECRET_KEY = 'g@lvosw74juew$l3+ga3x&j#nnu3gmb&g-b!=fs$j-njh-hsav'
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost',
-    '127.0.0.1',
-    '[::1]',
-    'testserver',]
+                 '127.0.0.1',
+                 '[::1]',
+                 'testserver', ]
 
 
 INSTALLED_APPS = [
@@ -54,7 +54,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'yatube.urls'
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -78,7 +78,7 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     }
-} 
+}
 
 DATABASES = {
     'default': {
