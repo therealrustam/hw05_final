@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Об авторе проекта{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h1>Привет, меня зовут Рустам и это мой учебный проект!</h1>
+  <p>
+    Я по образованию инженер по РЗиА, но в этом (2021) году решил пройти обучение на разработчика Python.
+    Чем больше я изучаю различные возможности в программировании, тем больше мне становится интересно.
+    Я надеюсь, что пройду до конца обучение и найду работу в IT сфере.
+    <br>
+    <br>
+    <a class="btn btn-dark" href="https://github.com/therealrustam">
+      Мой профиль в GitHub </a>
+  </p>
+  <p><img src="{% static 'img/Rustam.jpg' %}" width="800" alt="My photo"></p>
+</div>
+{% endblock %}
