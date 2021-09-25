@@ -41,7 +41,7 @@ class FollowTests(TestCase):
         self.authorized_client2 = Client()
         self.authorized_client2.force_login(self.user2)
 
-    def test_authorized_client_can_add_delete_follow(self):
+    def test_authorized_client_can_add_follow(self):
         self.authorized_client.post(
             reverse('posts:profile_follow', kwargs={
                     'username': self.username}),
@@ -50,6 +50,8 @@ class FollowTests(TestCase):
             user=self.user1,
             author=self.user).count()
         self.assertEqual(follow_count, 1)
+
+    def test_authorized_client_can_delete_follow(self):
         self.authorized_client.post(
             reverse('posts:profile_unfollow', kwargs={
                     'username': self.username}),

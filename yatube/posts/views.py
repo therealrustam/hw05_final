@@ -39,9 +39,7 @@ def profile(request, username):
     following = False
     if request.user.is_authenticated:
         follow_list = Follow.objects.filter(user=request.user, author=author)
-        follow_count = follow_list.count()
-        if follow_count != 0:
-            following = True
+        following = follow_list.exists()
     post_list = author.posts.all()
     post_sum = post_list.count()
     paginator = Paginator(post_list, settings.PAGE)
@@ -143,25 +141,14 @@ def follow_index(request):
 @login_required
 def profile_follow(request, username):
     author = get_object_or_404(User, username=username)
-    if (request.user.username != author.username) and (
-            Follow.objects.filter(
-                user=request.user,
-                author=author).count() == 0):
+    if (request.user.id != author.id) and (
+        not Follow.objects.filter(
+            user=request.user,
+            author=author).exists()):
         Follow.objects.create(user=request.user, author=author)
     else:
         return redirect('posts:profile', username)
-    follow_list = Follow.objects.filter(user=request.user)
-    posts = []
-    for follow in follow_list:
-        author = get_object_or_404(User, username=follow.author.username)
-        posts += author.posts.all()
-    paginator = Paginator(posts, settings.PAGE)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    context = {
-        'page_obj': page_obj,
-    }
-    return render(request, 'posts/follow.html', context)
+    return redirect('posts:follow_index')
 
 
 @login_required
@@ -169,15 +156,4 @@ def profile_unfollow(request, username):
     author = get_object_or_404(User, username=username)
     Follow.objects.filter(user=request.user,
                           author=author).delete()
-    follow_list = Follow.objects.filter(user=request.user)
-    posts = []
-    for follow in follow_list:
-        author = get_object_or_404(User, username=follow.author.username)
-        posts += author.posts.all()
-    paginator = Paginator(posts, settings.PAGE)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    context = {
-        'page_obj': page_obj,
-    }
-    return render(request, 'posts/follow.html', context)
+    return redirect('posts:follow_index')
