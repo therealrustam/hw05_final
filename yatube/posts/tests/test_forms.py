@@ -148,7 +148,7 @@ class CommentFormTests(TestCase):
             data=form_data,
             follow=True,
         )
-        self.assertRedirects(response, '/auth/login/?next=/posts/1/comment')
+        self.assertRedirects(response, '/auth/login/?next=%2Fposts%2F1%2Fcomment%2F')
         self.assertEqual(Comment.objects.count(), comment_count)
         self.assertFalse(
             Comment.objects.filter(
