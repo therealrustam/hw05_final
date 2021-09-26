@@ -17,6 +17,8 @@ def index(request):
     page_obj = paginator.get_page(page_number)
     context = {
         'page_obj': page_obj,
+        'index': True,
+        'follow': False,
     }
     return render(request, 'posts/index.html', context)
 
@@ -124,16 +126,14 @@ def add_comment(request, post_id):
 
 @login_required
 def follow_index(request):
-    follow_list = Follow.objects.filter(user=request.user)
-    posts = []
-    for follow in follow_list:
-        author = get_object_or_404(User, username=follow.author.username)
-        posts += author.posts.all()
+    posts = Post.objects.filter(author__following__user=request.user)
     paginator = Paginator(posts, settings.PAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
         'page_obj': page_obj,
+        'index': False,
+        'follow': True,
     }
     return render(request, 'posts/follow.html', context)
 
@@ -141,13 +141,7 @@ def follow_index(request):
 @login_required
 def profile_follow(request, username):
     author = get_object_or_404(User, username=username)
-    if (request.user.id != author.id) and (
-        not Follow.objects.filter(
-            user=request.user,
-            author=author).exists()):
-        Follow.objects.create(user=request.user, author=author)
-    else:
-        return redirect('posts:profile', username)
+    Follow.objects.get_or_create(user=request.user, author=author)
     return redirect('posts:follow_index')
 
 
