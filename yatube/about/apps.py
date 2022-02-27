@@ -1,3 +1,6 @@
+""""
+Конфигурация приложения about.
+"""
 from django.apps import AppConfig
 
 

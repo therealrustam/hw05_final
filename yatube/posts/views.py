@@ -1,3 +1,7 @@
+"""
+View-функции создания, редактирования
+постов, комментариев, подписок и чтения сообществ.
+"""
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -11,6 +15,10 @@ from .models import Group, Post, Follow
 
 @cache_page(20, key_prefix='index_page')
 def index(request):
+    """
+    Метод главной страницы, куда выводятся
+    последние добавленные посты.
+    """
     post_list = Post.objects.all()
     paginator = Paginator(post_list, settings.PAGE)
     page_number = request.GET.get('page')
@@ -24,6 +32,10 @@ def index(request):
 
 
 def group_posts(request, slug):
+    """
+    Метод страницы сообщества, куда выводятся
+    все посты сообщества.
+    """
     group = get_object_or_404(Group, slug=slug)
     posts = group.posts.all()
     paginator = Paginator(posts, settings.PAGE)
@@ -37,6 +49,10 @@ def group_posts(request, slug):
 
 
 def profile(request, username):
+    """
+    Метод страницы профиля автора, куда выводятся
+    последние добавленные посты автора.
+    """
     author = get_object_or_404(User, username=username)
     following = False
     if request.user.is_authenticated:
@@ -57,6 +73,10 @@ def profile(request, username):
 
 
 def post_detail(request, post_id):
+    """
+    Метод страницы поста, куда выводятся
+    все данные, связанные с данным постом.
+    """
     post_one = get_object_or_404(Post, id=post_id)
     author_one = post_one.author
     post_list = author_one.posts.all()
@@ -77,6 +97,10 @@ def post_detail(request, post_id):
 
 @login_required
 def post_create(request):
+    """
+    Метод страницы создания поста, куда
+    вводятся все данные.
+    """
     form = PostForm(request.POST or None,
                     files=request.FILES or None)
     if request.method == 'POST':
@@ -95,6 +119,10 @@ def post_create(request):
 
 @login_required
 def post_edit(request, post_id):
+    """
+    Метод страницы редактирования поста, где
+    возможно отредактировать данные уже созданного поста.
+    """
     post = get_object_or_404(Post, pk=post_id)
     author = post.author
     if author != request.user:
@@ -114,6 +142,10 @@ def post_edit(request, post_id):
 
 @login_required
 def add_comment(request, post_id):
+    """
+    Метод добавления комментария для
+    авторизованного пользователя.
+    """
     post = get_object_or_404(Post, pk=post_id)
     form = CommentForm(request.POST or None)
     if form.is_valid():
@@ -126,6 +158,9 @@ def add_comment(request, post_id):
 
 @login_required
 def follow_index(request):
+    """
+    Метод страницы постов авторов.
+    """
     posts = Post.objects.filter(author__following__user=request.user)
     paginator = Paginator(posts, settings.PAGE)
     page_number = request.GET.get('page')
@@ -140,6 +175,9 @@ def follow_index(request):
 
 @login_required
 def profile_follow(request, username):
+    """
+    Метод подписки на автора.
+    """
     author = get_object_or_404(User, username=username)
     if request.user.id != author.id:
         Follow.objects.get_or_create(user=request.user, author=author)
@@ -150,6 +188,9 @@ def profile_follow(request, username):
 
 @login_required
 def profile_unfollow(request, username):
+    """
+    Метод отписки от автора.
+    """
     author = get_object_or_404(User, username=username)
     Follow.objects.filter(user=request.user,
                           author=author).delete()

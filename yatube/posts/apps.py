@@ -1,3 +1,6 @@
+""""
+Конфигурация приложения posts.
+"""
 from django.apps import AppConfig
 
 

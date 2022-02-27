@@ -1,9 +1,16 @@
+"""
+Создание зоны администратора.
+"""
 from django.contrib import admin
 
 from .models import Comment, Follow, Group, Post
 
 
 class PostAdmin(admin.ModelAdmin):
+    """"
+    Настройка вида администратора для
+    модели постов.
+    """
     list_display = (
         'pk',
         'text',

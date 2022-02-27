@@ -1,9 +1,16 @@
+"""
+Формы создания постов и комментариев.
+"""
+
 from django import forms
 
 from .models import Comment, Post
 
 
 class PostForm(forms.ModelForm):
+    """
+    Форма создания постов.
+    """
     class Meta:
         model = Post
         fields = ('text', 'group', 'image')
@@ -20,6 +27,9 @@ class PostForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
+    """
+    Форма комментариев.
+    """
     class Meta:
         model = Comment
         fields = ('text',)
