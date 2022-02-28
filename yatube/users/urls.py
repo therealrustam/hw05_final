@@ -2,7 +2,6 @@
 Маршрутизатор регистрации, входа и
 выхода из учетной записи, сброса пароля.
 """
-
 from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView
 from django.urls import path
 

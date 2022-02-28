@@ -1,7 +1,6 @@
 """
 View-класс для регистрациии пользователя.
 """
-
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 

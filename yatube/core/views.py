@@ -1,3 +1,7 @@
+"""
+View-функции для страниц с ошибками
+404, 403, 403csrf, 500.
+"""
 from django.shortcuts import render
 
 

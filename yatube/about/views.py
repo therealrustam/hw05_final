@@ -1,7 +1,6 @@
 """
 View-классы страниц об авторе и технологии.
 """
-
 from django.views.generic import TemplateView
 
 
